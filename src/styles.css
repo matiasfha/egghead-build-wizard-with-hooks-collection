@@ -49,6 +49,14 @@
   float: left;
 }
 
+.wizard__buttons-left:disabled,
+.wizard__buttons-right:disabled {
+  background: #333;
+  color: red;
+  pointer-events: none;
+  cursor: default;
+}
+
 .wizard__buttons-right {
   grid-area: right;
   float: right;

@@ -1,10 +1,8 @@
 import React from "react";
 
-import "./styles.css";
-
 const WizardContext = React.createContext();
 
-const WizardButtonPrev = (props) => {
+export const WizardButtonPrev = (props) => {
   const { goPrevPage, activePageIndex } = React.useContext(WizardContext);
   return activePageIndex > 0 ? (
     <button type="button" {...props} onClick={goPrevPage}>
@@ -13,7 +11,7 @@ const WizardButtonPrev = (props) => {
   ) : null;
 };
 
-const WizardButtonNext = (props) => {
+export const WizardButtonNext = (props) => {
   const { goNextPage, activePageIndex, steps } = React.useContext(
     WizardContext
   );
@@ -49,44 +47,11 @@ const Wizard = ({ children, steps }) => {
   );
 };
 
-const WizardPages = (props) => {
+export const WizardPages = (props) => {
   const { activePageIndex } = React.useContext(WizardContext);
   const pages = React.Children.toArray(props.children);
   const currentPage = pages[activePageIndex];
   return <div {...props}>{currentPage}</div>;
 };
 
-const Page1 = () => (
-  <div>
-    <h1>Pagina 1</h1>
-  </div>
-);
-
-const Page2 = () => (
-  <div>
-    <h1>Pagina 2</h1>
-  </div>
-);
-const Page3 = () => (
-  <div>
-    <h1>Pagina 3</h1>
-  </div>
-);
-
-const App = () => {
-  return (
-    <Wizard steps={3}>
-      <WizardPages className="wizard__content">
-        <Page1 />
-        <Page2 />
-        <Page3 />
-      </WizardPages>
-      <div className="wizard__buttons">
-        <WizardButtonPrev className="wizard__buttons-left" />
-        <WizardButtonNext className="wizard__buttons-right" />
-      </div>
-    </Wizard>
-  );
-};
-
-export default App;
+export default Wizard;
