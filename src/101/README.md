@@ -1,4 +1,4 @@
-# Cnstruir un componente wizard utilizando `useState` React hooks
+# Construir un componente wizard utilizando `useState` React hooks
 
 En esta lección se define una primera versión sencilla de un componente wizard.
 El componente tiene las siguientes características:
