@@ -1,0 +1,55 @@
+.App {
+  font-family: sans-serif;
+  text-align: center;
+}
+
+.wizard {
+  max-width: 650px;
+  width: 90%;
+  margin: 4rem auto 0;
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: 50px 1fr 35px;
+  grid-template-areas:
+    "progress"
+    "content"
+    "buttons";
+}
+
+.wizard__progress {
+  text-align: center;
+  grid-area: progress;
+  padding: 1rem;
+}
+
+.wizard__content {
+  grid-area: content;
+  padding: 1rem;
+  background: #eeeeee;
+  padding-top: 1rem;
+  box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);
+  height: 200px;
+}
+
+.wizard__buttons {
+  display: grid;
+  grid-area: buttons;
+  grid-template-columns: 150px 150px;
+  grid-template-areas: "left right";
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem;
+  padding-bottom: 1rem;
+}
+
+.wizard__buttons-left {
+  grid-area: left;
+  float: left;
+}
+
+.wizard__buttons-right {
+  grid-area: right;
+  float: right;
+}
