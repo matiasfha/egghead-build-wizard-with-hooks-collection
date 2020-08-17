@@ -1,9 +1,5 @@
 import React from "react";
-import Wizard, {
-  WizardPages,
-  WizardButtonNext,
-  WizardButtonPrev
-} from "./Wizard";
+import Wizard from "./Wizard";
 import "../styles.css";
 
 const Page1 = () => (
@@ -26,14 +22,14 @@ const Page3 = () => (
 const App = () => {
   return (
     <Wizard steps={3}>
-      <WizardPages className="wizard__content">
+      <Wizard.Pages className="wizard__content">
         <Page1 />
         <Page2 />
         <Page3 />
-      </WizardPages>
+      </Wizard.Pages>
       <div className="wizard__buttons">
-        <WizardButtonPrev className="wizard__buttons-left" />
-        <WizardButtonNext className="wizard__buttons-right" />
+        <Wizard.ButtonPrev className="wizard__buttons-left" />
+        <Wizard.ButtonNext className="wizard__buttons-right" />
       </div>
     </Wizard>
   );

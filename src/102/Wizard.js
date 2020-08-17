@@ -2,26 +2,6 @@ import React from "react";
 
 const WizardContext = React.createContext();
 
-export const WizardButtonPrev = (props) => {
-  const { goPrevPage, activePageIndex } = React.useContext(WizardContext);
-  return activePageIndex > 0 ? (
-    <button type="button" {...props} onClick={goPrevPage}>
-      Atras
-    </button>
-  ) : null;
-};
-
-export const WizardButtonNext = (props) => {
-  const { goNextPage, activePageIndex, steps } = React.useContext(
-    WizardContext
-  );
-  return activePageIndex < steps - 1 ? (
-    <button type="button" {...props} onClick={goNextPage}>
-      Siguiente
-    </button>
-  ) : null;
-};
-
 const Wizard = ({ children, steps }) => {
   const [activePageIndex, setActivePageIndex] = React.useState(0);
 
@@ -54,4 +34,29 @@ export const WizardPages = (props) => {
   return <div {...props}>{currentPage}</div>;
 };
 
+
+export const WizardButtonPrev = (props) => {
+  const { goPrevPage, activePageIndex } = React.useContext(WizardContext);
+  return activePageIndex > 0 ? (
+    <button type="button" {...props} onClick={goPrevPage}>
+      Atras
+    </button>
+  ) : null;
+};
+
+export const WizardButtonNext = (props) => {
+  const { goNextPage, activePageIndex, steps } = React.useContext(
+    WizardContext
+  );
+  return activePageIndex < steps - 1 ? (
+    <button type="button" {...props} onClick={goNextPage}>
+      Siguiente
+    </button>
+  ) : null;
+};
+
+
+Wizard.ButtonNext = WizardButtonNext;
+Wizard.ButtonPrev = WizardButtonPrev;
+Wizard.Pages = WizardPages;
 export default Wizard;
