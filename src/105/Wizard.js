@@ -12,6 +12,24 @@ export const useWizardContext = () => {
   return context;
 };
 
+export const useWizardProgress = () => {
+  const { activePageIndex, steps } = useWizardContext();
+  return {
+    currentIndex: activePageIndex + 1,
+    steps
+  };
+};
+
+export const useWizardButtons = () => {
+  const { goNextPage, goPrevPage, activePageIndex, steps } = useWizardContext();
+  return {
+    goNextPage,
+    goPrevPage,
+    activePageIndex,
+    steps
+  };
+};
+
 const reducer = (state, action) => {
   const { steps, activePageIndex } = state;
   switch (action.type) {
@@ -102,24 +120,6 @@ const WizardButtonNext = ({ children, as: Comp = "button", ...props }) => {
       {children}
     </Comp>
   ) : null;
-};
-
-export const useWizardProgress = () => {
-  const { activePageIndex, steps } = useWizardContext();
-  return {
-    currentIndex: activePageIndex + 1,
-    steps
-  };
-};
-
-export const useWizardButtons = () => {
-  const { goNextPage, goPrevPage, activePageIndex, steps } = useWizardContext();
-  return {
-    goNextPage,
-    goPrevPage,
-    activePageIndex,
-    steps
-  };
 };
 
 export const useWizardPages = (totalSteps) => {
