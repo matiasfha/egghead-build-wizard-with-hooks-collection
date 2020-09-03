@@ -1,5 +1,5 @@
 import React from "react";
-import Wizard from "./Wizard";
+import Wizard, { actions, wizardReducer } from "./Wizard";
 import "../styles.css";
 
 const Page1 = () => (
@@ -19,9 +19,20 @@ const Page3 = () => (
   </div>
 );
 
+const reducer = (state, action) => {
+  if (action.type === actions.NEXT_PAGE) {
+    alert("NEXT PAGE CLICKE");
+  }
+  return wizardReducer(state, action);
+};
+
+const initialState = {
+  activePageIndex: 2
+};
+
 const App = () => {
   return (
-    <Wizard>
+    <Wizard reducer={reducer} initialState={initialState}>
       <Wizard.Pages className="wizard__content">
         <Page1 />
         <Page2 />

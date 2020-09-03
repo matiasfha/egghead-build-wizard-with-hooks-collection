@@ -6,55 +6,69 @@ export const useWizardContext = () => {
   const context = React.useContext(WizardContext);
   if (!context) {
     throw new Error(
-      `Un componente compuesto de Wizard no puede ser renderizado fuera del Wizard padre`
+      `Un componente compuesto de Wizard no puede ser
+       renderizado fuera del Wizard padre`
     );
   }
   return context;
 };
 
-const reducer = (state, action) => {
-  const { steps, activePageIndex } = state;
+const defaultInitialState = {
+  activePageIndex: 0,
+  steps: 0
+};
+
+export const actions = {
+  NEXT_PAGE: "NEXT_PAGE",
+  PREV_PAGE: "PREV_PAGE",
+  SET_STEPS: "SET_STEPS"
+};
+
+const defaultReducer = (state, action) => state;
+
+export const wizardReducer = (state, action) => {
+  const { activePageIndex } = state;
   switch (action.type) {
-    case "NEXT_PAGE":
-      const newIndex = activePageIndex + 1;
-      if (newIndex < steps) {
-        return { ...state, activePageIndex: newIndex };
-      }
-      return state;
-    case "PREV_PAGE":
-      if (activePageIndex > 0) {
-        return { ...state, currentIndex: activePageIndex - 1 };
-      }
-      return state;
-    case "SET_STEP_COUNT":
+    case actions.NEXT_PAGE:
+      return { ...state, activePageIndex: activePageIndex + 1 };
+    case actions.PREV_PAGE:
+      return { ...state, activePageIndex: activePageIndex - 1 };
+    case actions.SET_STEPS:
       return { ...state, steps: action.payload };
     default:
       return state;
   }
 };
-const initialState = {
-  activePageIndex: 0,
-  steps: 0
+
+const combineReducers = (...reducers) => (state, action) => {
+  return reducers.reduce((acc, nextReducer) => {
+    return nextReducer(acc, action);
+  }, state);
 };
 
-const Wizard = ({ children }) => {
-  const [state, dispatch] = React.useReducer(reducer, initialState);
+const Wizard = ({ children, reducer = defaultReducer, initialState }) => {
+  const [{ activePageIndex, steps }, dispatch] = React.useReducer(
+    combineReducers(wizardReducer, reducer),
+    {
+      ...defaultInitialState,
+      ...initialState
+    }
+  );
 
-  const goNextPage = React.useCallback(() => {
-    dispatch({ type: "NEXT_PAGE" });
-  }, []);
+  const goNextPage = () => {
+    dispatch({ type: actions.NEXT_PAGE });
+  };
 
-  const goPrevPage = React.useCallback(() => {
-    dispatch({ type: "PREV_PAGE" });
-  }, []);
+  const goPrevPage = () => {
+    dispatch({ type: actions.PREV_PAGE });
+  };
 
   const setSteps = React.useCallback(
-    (steps) => {
-      dispatch({ type: "SET_STEP_COUNT", payload: steps });
+    (n) => {
+      dispatch({ type: actions.SET_STEPS, payload: n });
     },
     [dispatch]
   );
-  const { activePageIndex, steps } = state;
 
   const context = {
     activePageIndex,
@@ -63,6 +77,7 @@ const Wizard = ({ children }) => {
     goPrevPage,
     setSteps
   };
+
   return (
     <WizardContext.Provider value={context}>
       <div className="wizard">{children}</div>
@@ -70,17 +85,14 @@ const Wizard = ({ children }) => {
   );
 };
 
-const WizardPages = ({ children, ...props }) => {
-  const { setSteps, activePageIndex } = React.useContext(WizardContext);
-  const pages = React.Children.toArray(children);
-
-  const steps = React.Children.count(children);
-
+const WizardPages = (props) => {
+  const { activePageIndex, setSteps } = useWizardContext();
+  const pages = React.Children.toArray(props.children);
+  const steps = React.Children.count(props.children);
+  const currentPage = pages[activePageIndex];
   React.useEffect(() => {
     setSteps(steps);
   }, [steps, setSteps]);
-
-  let currentPage = pages[activePageIndex];
   return <div {...props}>{currentPage}</div>;
 };
 
