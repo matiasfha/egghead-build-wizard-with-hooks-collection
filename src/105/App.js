@@ -4,7 +4,8 @@ import "../styles.css";
 import Wizard, {
   useWizardProgress,
   useWizardButtons,
-  useWizardPages
+  useWizardPages,
+  actions
 } from "./Wizard";
 
 const Progress = () => {
@@ -18,7 +19,7 @@ const Progress = () => {
 
 const Navigation = () => {
   const { activePageIndex, goNextPage, goPrevPage, steps } = useWizardButtons();
-  console.log({ activePageIndex });
+  console.log({ activePageIndex, steps });
   return (
     <div className="wizard__buttons">
       <button
@@ -71,9 +72,20 @@ const Pages = ({ children }) => {
   );
 };
 
+const reducer = (state, action) => {
+  if (action.type === actions.NEXT_PAGE) {
+    alert("NEXT PAGE CLICKE");
+  }
+  return state;
+};
+
+const initialState = {
+  activePageIndex: 2
+};
+
 const App = () => {
   return (
-    <Wizard>
+    <Wizard reducer={reducer} initialState={initialState}>
       <Navigation />
       <Pages>
         <Page1 />
